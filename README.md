@@ -15,7 +15,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 **Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 1,050 words) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
 
-**Controls** live in `/config`:
+**Controls** sit in a band above the prompt: the git level, pause staging and writing tests as buttons, plus Find issues, Review and Auto. A press takes effect at once and Claude is told the new value. The band needs a Claude Code build with plugin UI modules; **Hide** removes it and the "Band above the prompt" setting brings it back. The same settings are in `/config`:
 
 | Setting | Values | Effect |
 | --- | --- | --- |
@@ -53,7 +53,8 @@ The rules have one home, `skills/rules/SKILL.md`; the session hook renders that 
 
 ```bash
 npm install   # @types/node and typescript, for the type check only
-npm test      # node:test with coverage
+npm test             # node:test with coverage: the scripts (test/*.spec.ts)
 npm run check
+claude plugin test .  # the band (test/*.test.tsx), run by Claude Code's own test runner
 claude plugin validate .
 ```

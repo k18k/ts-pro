@@ -1,13 +1,21 @@
 {
   "name": "ts-pro",
   "displayName": "TS Pro",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript coding, code review and vibe coding with low technical debt: one source of truth, native Node.js first, visible exceptions.",
   "author": { "name": "Krystian Mikołajczyk" },
   "repository": "https://github.com/k18k/ts-pro",
   "license": "MIT",
   "keywords": ["typescript", "nodejs", "code-review", "technical-debt"],
+  "hooks": "./hooks/band.json",
+  "types": "./types/index.d.ts",
   "userConfig": {
+    "band": {
+      "type": "boolean",
+      "title": "Band above the prompt",
+      "description": "Show the ts-pro controls above the prompt: git level, pause staging, writing tests and the work modes.",
+      "default": true
+    },
     "git_level": {
       "type": "string",
       "title": "Git level",
