@@ -7,7 +7,6 @@
   "repository": "https://github.com/k18k/ts-pro",
   "license": "MIT",
   "keywords": ["typescript", "nodejs", "code-review", "technical-debt"],
-  "dependencies": ["native-nodejs-programming"],
   "userConfig": {
     "git_level": {
       "type": "string",

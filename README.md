@@ -9,11 +9,11 @@ claude plugin marketplace add k18k/ts-pro
 claude plugin install ts-pro@k18k
 ```
 
-ts-pro depends on the `native-nodejs-programming` plugin from the same marketplace, which Claude Code enables with it. The hooks are TypeScript files run directly by Node.js, so Node.js 22.18 or later must be on `PATH` (26 or later is the target).
+ts-pro needs no other plugin: the native Node.js baseline ships with it. The hooks are TypeScript files run directly by Node.js, so Node.js 22.18 or later must be on `PATH` (26 or later is the target).
 
 ## What it does
 
-**Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 950 words) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns and the adapter pattern are separate reference files.
+**Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 1,050 words) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
 
 **Controls** live in `/config`:
 

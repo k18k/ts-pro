@@ -6,11 +6,6 @@
       "name": "ts-pro",
       "source": "./",
       "description": "TypeScript coding, code review and vibe coding with low technical debt."
-    },
-    {
-      "name": "native-nodejs-programming",
-      "source": { "source": "github", "repo": "k18k/native-nodejs-programming-skills" },
-      "description": "Native Node.js with TypeScript: no frameworks, bundlers, transpilers or build steps."
     }
   ]
 }

@@ -50,7 +50,8 @@ Each principle comes with a few examples; recognise the other cases yourself.
 
 ## Native first, zero dependencies as the target
 
-- Runtime baseline (Node.js 26+, TypeScript 7, strict ESM, type stripping, `node:test`, `#` imports, `.ts` extensions, stable APIs) is the `native-nodejs-programming` skill; load it for setup, imports or Node APIs. Where this skill differs, this skill wins: `--experimental-test-coverage` is approved, and a linter and formatter are allowed (Oxc preferred, ESLint acceptable).
+- Runtime baseline: Node.js 26+ runs TypeScript 7 source directly. Strict ESM, exact `.ts` import extensions, `import type`, `#` aliases from `package.json` `"imports"` (never `paths`), `node:test`, stable APIs only. No build step, bundler, `tsx` or `ts-node`; no CommonJS; no syntax that needs code generation (`enum`, `namespace`, parameter properties, decorators). Read [references/native-node.md](references/native-node.md) before setting up a project, changing `package.json` or `tsconfig.json`, or using a Node.js API you are unsure of.
+- Dev dependencies are `@types/node`, `typescript`, and a linter and formatter (Oxc preferred, ESLint acceptable). `--experimental-test-coverage` is approved.
 - Before adding a package, check in order: the runtime already does it (`fetch`, `--env-file`, `--watch`, `node:crypto`, `fs.glob`, `Temporal`), the project already has it, or it is a few lines to write.
 - Justified only when it is the product's core or would be more code to maintain by hand; record it in `docs/decisions.md`.
 - If a measurement shows a built-in is the bottleneck, go lower (for example a Rust addon), not to a heavier package. Never on a guess.

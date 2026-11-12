@@ -11,7 +11,7 @@ disable-model-invocation: true
    - What is the product itself, and what around it should be replaceable?
    - For each replaceable part (storage, mail, queue), how wide should support go?
    - Which existing dependencies are deliberate?
-3. **Baseline.** Load the `native-nodejs-programming` skill and compare `package.json` and `tsconfig.json` with its baseline. Report each difference. Change nothing unless asked: an existing project's setup is not yours to rewrite.
+3. **Baseline.** Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/references/native-node.md` and compare `package.json` and `tsconfig.json` with its baseline files. Report each difference. Change nothing unless asked: an existing project's setup is not yours to rewrite.
 4. **Linter and formatter.** If the project has neither, recommend Oxc for both and offer to add it; check the current Oxc documentation for the package names and configuration instead of relying on memory. If the project already uses ESLint, leave it.
 5. **Issue source.** Issue source is **${user_config.issue_source}**. For `folder`, create `${user_config.issues_folder}` if it is missing. For `github`, check that `gh` is installed and authenticated.
 6. **Controls.** Tell the developer the four settings live in `/config`: Git level (now **${user_config.git_level}**), Pause staging, Writing tests (now **${user_config.write_tests}**) and the autonomous task limit.

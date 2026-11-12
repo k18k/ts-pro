@@ -12,5 +12,6 @@ test('renders the rules without frontmatter and with the setting filled in', asy
 test('points reference links at files that exist', async () => {
   const rules = await renderSessionRules({ writeTests: 'true' })
   assert.match(rules, /\(\/.*skills\/rules\/references\/hacky-code\.md\)/)
+  assert.match(rules, /\(\/.*skills\/rules\/references\/native-node\.md\)/)
   assert.ok(!rules.includes('(references/'))
 })
