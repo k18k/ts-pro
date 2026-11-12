@@ -1,0 +1,1 @@
+{ "name": "data-sync", "private": true, "type": "module", "engines": { "node": ">=26" }, "scripts": {} }

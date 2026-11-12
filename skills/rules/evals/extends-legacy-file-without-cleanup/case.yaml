@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: extends-legacy-file-without-cleanup
+expected_outcome: |
+  The new function follows the rules (no return type, no any, strict equality, const,
+  a single object parameter, no magic numbers without a name or exception comment)
+  even though the file around it does not, and the existing code is left as it was.
+context:
+  scaffold_script: place-files.sh

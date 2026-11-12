@@ -1,0 +1,14 @@
+{
+  "include": ["scripts/**/*.ts", "test/**/*.ts"],
+  "compilerOptions": {
+    "types": ["node"],
+    "erasableSyntaxOnly": true,
+    "allowImportingTsExtensions": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "strict": true
+  }
+}

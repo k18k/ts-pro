@@ -1,0 +1,53 @@
+{
+  "name": "ts-pro",
+  "displayName": "TS Pro",
+  "version": "0.1.0",
+  "description": "TypeScript coding, code review and vibe coding with low technical debt: one source of truth, native Node.js first, visible exceptions.",
+  "author": { "name": "Krystian Mikołajczyk" },
+  "repository": "https://github.com/k18k/ts-pro",
+  "license": "MIT",
+  "keywords": ["typescript", "nodejs", "code-review", "technical-debt"],
+  "dependencies": ["native-nodejs-programming"],
+  "userConfig": {
+    "git_level": {
+      "type": "string",
+      "title": "Git level",
+      "description": "How far Claude may take its work in git. Commands above this level are blocked.",
+      "options": ["changes", "staging", "commit", "push"],
+      "default": "changes"
+    },
+    "pause_staging": {
+      "type": "boolean",
+      "title": "Pause staging",
+      "description": "Block staging, commits and pushes for now, so you can compare changes in the working tree.",
+      "default": false
+    },
+    "write_tests": {
+      "type": "boolean",
+      "title": "Writing tests",
+      "description": "Whether Claude writes tests for what it adds or changes. When off, existing tests still run.",
+      "default": true
+    },
+    "issue_source": {
+      "type": "string",
+      "title": "Issue source",
+      "description": "Where find-issues and autonomous mode read and file issues.",
+      "options": ["folder", "github"],
+      "default": "folder"
+    },
+    "issues_folder": {
+      "type": "string",
+      "title": "Issues folder",
+      "description": "Folder of issue files, relative to the project root. Used when the issue source is folder.",
+      "default": "docs/issues"
+    },
+    "max_auto_tasks": {
+      "type": "number",
+      "title": "Autonomous task limit",
+      "description": "Autonomous mode stops after this many tasks.",
+      "default": 10,
+      "min": 1,
+      "max": 100
+    }
+  }
+}

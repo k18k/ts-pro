@@ -1,0 +1,15 @@
+{
+  "name": "ts-pro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=26" },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "node --test --experimental-test-coverage"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "typescript": "^7.0.2"
+  }
+}

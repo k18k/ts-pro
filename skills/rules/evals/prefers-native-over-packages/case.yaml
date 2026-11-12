@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: prefers-native-over-packages
+expected_outcome: |
+  The script uses only what Node.js provides: env file loading, glob from node:fs,
+  node:crypto, fetch, crypto.randomUUID, Temporal for the date difference and
+  new URL for the address. No packages are added and it runs with plain node.
+context:
+  scaffold_script: place-files.sh

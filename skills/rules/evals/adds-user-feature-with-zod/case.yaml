@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: adds-user-feature-with-zod
+expected_outcome: |
+  A zod schema is the single definition of a user. No hand-written user type and no
+  z.infer alias; the type is written inline where a parameter needs it. Storage is a
+  replaceable adapter with an in-memory implementation, reached without passing it
+  into functions. No explicit return types, files named by kind.
+context:
+  scaffold_script: place-files.sh
