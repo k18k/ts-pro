@@ -85,7 +85,6 @@ export const register: Register = (on, options) => {
           <Button key="find-issues" plain label="Find issues" onPress={() => runCommand({ command: 'ts-pro:find-issues' })} />
           <Button key="review" plain label="Review" onPress={() => runCommand({ command: 'ts-pro:review' })} />
           <Button key="auto" plain label="Auto" onPress={() => runCommand({ command: 'ts-pro:auto' })} />
-          <Button key="hide" plain dimColor label="Hide" onPress={() => setControl({ field: 'band', value: false })} />
         </Box>
         {below}
       </Box>
