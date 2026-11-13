@@ -5,11 +5,12 @@ export type Controls = {
   write_tests: boolean
   non_invasive: boolean
   subagents: (typeof import('../hooks/band.tsx').subagentModes)[number]
+  issue_source: (typeof import('../hooks/band.tsx').issueSources)[number]
   band: boolean
 }
 
 declare module 'claude-code' {
   interface PluginState {
-    'ts-pro': { controls: Controls }
+    'ts-pro': { controls: Controls; isMoreOpen: boolean }
   }
 }

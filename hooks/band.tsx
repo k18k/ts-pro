@@ -6,8 +6,10 @@ import type { Controls } from '../types'
 
 export const subagentModes = ['off', 'ts-pro', 'all'] as const
 
-const nextSubagentMode = ({ mode }: { mode: Controls['subagents'] }) =>
-  subagentModes[(subagentModes.indexOf(mode) + 1) % subagentModes.length]
+export const issueSources = ['folder', 'github', 'session'] as const
+
+const findNext = <Value,>({ values, current }: { values: readonly Value[]; current: Value }) =>
+  values[(values.indexOf(current) + 1) % values.length] ?? current
 
 // The band above the prompt. The settings themselves live in the plugin's userConfig, which
 // the command hooks and skills read; a press writes there, and this copy only redraws the band.
@@ -17,6 +19,7 @@ const readControls = ({ options }: { options: PluginOptions }) => ({
   write_tests: options.write_tests !== false,
   non_invasive: options.non_invasive === true,
   subagents: subagentModes.find((mode) => mode === options.subagents) ?? subagentModes[0],
+  issue_source: issueSources.find((source) => source === options.issue_source) ?? issueSources[0],
   band: options.band !== false,
 })
 
@@ -49,12 +52,14 @@ const describeControls = ({ controls }: { controls: Controls }) =>
     `- Staging: ${controls.pause_staging ? 'paused. Stage, commit and push nothing; leave the work in the working tree.' : 'not paused.'}`,
     `- Writing tests: ${controls.write_tests ? 'on.' : 'off. Write no new tests; still run the existing ones.'}`,
     `- Subagents: ${subagentAdvice[controls.subagents]}`,
+    `- Issue source: ${controls.issue_source}.`,
     `- Non-invasive mode: ${controls.non_invasive ? nonInvasiveAdvice : 'off.'}`,
   ].join('\n')
 
 export const register: Register = (on, options) => {
   const configured = readControls({ options })
   const controls = atom({ plugin: 'ts-pro', key: 'controls' } as const, configured)
+  const isMoreOpen = atom({ plugin: 'ts-pro', key: 'isMoreOpen' } as const, false)
 
   // Runs again after a reload, which is how a change made in /config reaches the band.
   on('session.start', async ($, e, next) => {
@@ -70,6 +75,7 @@ export const register: Register = (on, options) => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const current = await read($, controls)
+    const isOpen = await read($, isMoreOpen)
     if (e.props.hasSurvey || !current.band) return next(e)
     // Other plugins share this slot; theirs is drawn below, not replaced.
     const below = await next(e).catch(() => undefined)
@@ -83,7 +89,7 @@ export const register: Register = (on, options) => {
 
     const toggleNonInvasive = async () => {
       await setControl({ field: 'non_invasive', value: !current.non_invasive })
-      if (!current.non_invasive && (options.issue_source ?? 'folder') === 'folder') {
+      if (!current.non_invasive && current.issue_source === 'folder') {
         $.ui.toast('ts-pro: issue files are blocked inside the project. Set the issues folder outside it, or use github or session, in /config.')
       }
     }
@@ -119,23 +125,42 @@ export const register: Register = (on, options) => {
             {...(current.write_tests ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
             onPress={() => setControl({ field: 'write_tests', value: !current.write_tests })}
           />
-          <Button
-            key="subagents"
-            label={subagentLabels[current.subagents]}
-            {...(current.subagents === 'off' ? { plain: true as const, dimColor: true } : { variant: 'primary' as const })}
-            onPress={() => setControl({ field: 'subagents', value: nextSubagentMode({ mode: current.subagents }) })}
-          />
-          <Button
-            key="non-invasive"
-            label={current.non_invasive ? 'non-invasive' : 'invasive ok'}
-            {...(current.non_invasive ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
-            onPress={() => toggleNonInvasive()}
-          />
           <Box flexGrow={1} />
           <Button key="find-issues" plain label="Find issues" onPress={() => runCommand({ command: 'ts-pro:find-issues' })} />
           <Button key="review" plain label="Review" onPress={() => runCommand({ command: 'ts-pro:review' })} />
           <Button key="auto" plain label="Auto" onPress={() => runCommand({ command: 'ts-pro:auto' })} />
+          <Button
+            key="more"
+            plain
+            dimColor
+            label={isOpen ? 'Less' : 'More'}
+            onPress={() => update($, isMoreOpen, (wasOpen) => !wasOpen)}
+          />
         </Box>
+        {isOpen && (
+          <Box flexDirection="row" alignItems="center" gap={1}>
+            <Text dimColor>more</Text>
+            <Button
+              key="subagents"
+              label={subagentLabels[current.subagents]}
+              {...(current.subagents === 'off' ? { plain: true as const, dimColor: true } : { variant: 'primary' as const })}
+              onPress={() => setControl({ field: 'subagents', value: findNext({ values: subagentModes, current: current.subagents }) })}
+            />
+            <Button
+              key="non-invasive"
+              label={current.non_invasive ? 'non-invasive' : 'invasive ok'}
+              {...(current.non_invasive ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
+              onPress={() => toggleNonInvasive()}
+            />
+            <Button
+              key="issue-source"
+              plain
+              dimColor
+              label={`issues: ${current.issue_source}`}
+              onPress={() => setControl({ field: 'issue_source', value: findNext({ values: issueSources, current: current.issue_source }) })}
+            />
+          </Box>
+        )}
         {below}
       </Box>
     )
