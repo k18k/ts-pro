@@ -22,8 +22,9 @@ Each principle comes with a few examples; recognise the other cases yourself.
 ## Conventions (arbitrary, so exact)
 
 - Names say what the function does. Boolean checks are `is...`; checks that throw are `assert...`.
-- No explicit return types; inference lets changes cascade. Only exception: `asserts x is T`, and `x is T` predicates the compiler fails to infer.
+- No explicit return types; inference lets changes cascade. Only exceptions: `asserts x is T`, `x is T` predicates the compiler fails to infer, and a function that returns a branded type.
 - No annotation where the type is inferable.
+- A value built for a typed target is checked against it where it is declared: `const config = { enabled: true } satisfies AppOptions` (preferred) or `const config: AppOptions = ...`, or written inline at the call. A bare object literal passed on later is banned.
 - One parameter per function; more than one value means a single well-typed object. No flag or optional positional parameters.
 - `const` by default; `let` only where reassignment is unavoidable.
 - Files are named by kind (`x.service.ts`, `x.controller.ts`, `x.z.ts`); the project's kinds are in `docs/structure.md`.
@@ -37,6 +38,7 @@ Each principle comes with a few examples; recognise the other cases yourself.
 - Variants derive from the original (`.pick`, `.omit`, `.extend`); closed sets are one `z.enum` or `as const` array with the union derived. No TypeScript `enum`.
 - Types cross layers by inference (row types from the table definition, response types from the handler); no parallel DTO type unless the shape truly differs.
 - No loose types at the top of files.
+- Prefer branded types (`string & { readonly brand: 'UserId' }`, or zod `.brand()`) for values of the same primitive that must not be mixed up, such as ids, units and validated strings.
 - No type gymnastics. No feature is banned; a reader must be able to say what the type resolves to at first glance.
 - Parse untrusted data once, where it enters; past that, functions trust their typed input.
 
