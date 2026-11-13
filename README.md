@@ -13,7 +13,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 ## What it does
 
-**Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 1,050 words) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
+**Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 1,600 words, including a working style: correct first, then the smallest change, with a small blast radius) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
 
 **Controls** sit in a band above the prompt: the git level, pause staging, writing tests as buttons, plus Find issues, Review and Auto. **More** opens a second row with non-invasive mode, disadvising subagents and the issue source. A press takes effect at once and Claude is told the new value. The band needs a Claude Code build with plugin UI modules; the "Band above the prompt" setting in `/config` turns it off and on. The same settings are in `/config`:
 

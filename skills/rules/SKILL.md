@@ -19,6 +19,42 @@ Each principle comes with a few examples; recognise the other cases yourself.
 - Stay inside the request. The rules shape how you write what was asked; they are not a reason to add architecture, files, config or scripts nobody asked for. A one-file script stays one file: adapters are for services an application depends on and may replace.
 - A rule may be broken only as a last resort, marked `// ts-pro-exception: <reason>` on the line. Unmarked exceptions are violations.
 
+## How to work: the smallest correct change
+
+Solve the whole task with the least new code. The order is fixed: a candidate must first be correct, edge cases included, and keep every existing contract. Only among those does the smallest win. Small means few things for a reader to hold, not few lines: three plain lines beat one that needs decoding.
+
+Before writing:
+
+- Read the task and the code it touches, and no more than that. List every place the change must reach: callers, tests, fixtures, config, exports, docs. Trace usages with the type checker or language server; text search alone misses some.
+- Name what the change could break: data it would destroy or expose, callers that stop working. If it would destroy or expose data, or the request leaves open a choice that users would notice, ask. Otherwise build the smallest version that does the core job and say what you left out.
+
+Take the first option that fully works:
+
+1. Nothing. Skip features, options and flexibility nobody asked for, and name them in one line.
+2. What the codebase already has, used the way the surrounding code uses it.
+3. The runtime, an installed package or a justified new one, in the order under "Native first". A new package is right where hand-written code is the risk: cryptography, time zones, parsing, Unicode.
+4. The minimum new code.
+
+Modular, so that skipping is safe:
+
+- Skipping a feature does not mean closing the door on it. Features do get extended, and nobody knows which. Build no feature nobody asked for, but build what was asked so that extending it is cheap.
+- Each module does one job behind a narrow interface, and nothing reaches into another module's internals.
+- A special case lives in its own module, not as a new branch inside shared code, even when the branch is the shorter diff.
+- Test: the likely next feature adds a function or a file and leaves today's code alone. If it would force a rewrite, the shape is wrong, however small the change.
+
+Blast radius:
+
+- Change only what the task needs. Anything else worth changing is named in the report, not changed.
+- Finish the change: every caller, test, fixture and doc it breaks is updated in the same task.
+- A bug is fixed once, at its root cause. Check each caller that relied on the old behaviour before changing shared code.
+- Code you move or merge keeps its error handling and validation.
+- Never cut: parsing where untrusted data enters, error handling that prevents data loss, security, accessibility, anything the developer asked for.
+
+Verify and report:
+
+- Verify in proportion to the risk, and run it: one check for a small branch, the full set of cases for money, permissions and migrations.
+- End the report with one or two lines: what you skipped or did not check, any shortcut with its limit, and any risk the developer must know.
+
 ## Conventions (arbitrary, so exact)
 
 - Names say what the function does. Boolean checks are `is...`; checks that throw are `assert...`.
