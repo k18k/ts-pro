@@ -9,6 +9,9 @@ export const readPluginOptions = () => {
     gitLevel: isGitLevel(configuredLevel) ? configuredLevel : gitLevels[0],
     isStagingPaused: process.env.CLAUDE_PLUGIN_OPTION_PAUSE_STAGING === 'true',
     writeTests: process.env.CLAUDE_PLUGIN_OPTION_WRITE_TESTS ?? 'true',
+    isNonInvasive: process.env.CLAUDE_PLUGIN_OPTION_NON_INVASIVE === 'true',
+    issueSource: process.env.CLAUDE_PLUGIN_OPTION_ISSUE_SOURCE ?? 'folder',
+    issuesFolder: process.env.CLAUDE_PLUGIN_OPTION_ISSUES_FOLDER ?? 'docs/issues',
     projectDirectory: process.env.CLAUDE_PROJECT_DIR ?? process.cwd(),
   }
 }

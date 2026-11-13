@@ -22,7 +22,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 | Git level | `changes`, `staging`, `commit`, `push` | A hook blocks git commands above the level |
 | Pause staging | on, off | Blocks staging, commits and pushes while you compare changes |
 | Writing tests | on, off | Whether Claude writes tests for what it changes; existing tests always run |
-| Non-invasive mode | on, off | Leaves no trace of ts-pro in the project; decisions go to `~/.claude/ts-pro/projects/` |
+| Non-invasive mode | on, off | Leaves no trace of ts-pro in the project: a hook blocks writes that mention ts-pro or put issue files in the project, and decisions go to `~/.claude/ts-pro/projects/`. Needs a user-scope install, because project and local installs are recorded in the project's `.claude` folder |
 | Disadvise subagents | `off`, `ts-pro`, `all` | Tells Claude to avoid ts-pro's own agents or all subagents; advice, not a block |
 | Issue source, Issues folder | `folder`, `github` or `session`; the folder may be outside the project | Where issues are read and filed |
 | Autonomous task limit | 1 to 100 | Where autonomous mode stops |

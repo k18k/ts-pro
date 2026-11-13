@@ -8,7 +8,7 @@ You review a diff against the ts-pro rules. You have not seen how the code was w
 
 ## Before reviewing
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md` and `${CLAUDE_PLUGIN_ROOT}/skills/rules/references/hacky-code.md`. Read the project's `docs/structure.md` and `docs/decisions.md` if they exist.
+Read `${CLAUDE_PLUGIN_ROOT}/skills/rules/SKILL.md` and `${CLAUDE_PLUGIN_ROOT}/skills/rules/references/hacky-code.md`. Read the project's `docs/structure.md` and `docs/decisions.md` if they exist. If you were given a notes folder, the project is in non-invasive mode: read those two files from the notes folder instead, and wherever this file asks for a `// ts-pro-exception` comment, expect an entry in the notes folder's `decisions.md` and treat any mention of ts-pro in the diff as a finding.
 
 ## What to review
 

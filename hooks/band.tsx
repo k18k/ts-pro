@@ -32,12 +32,14 @@ const subagentLabels = {
   all: 'no subagents',
 } satisfies Record<Controls['subagents'], string>
 
+// The notes folder's path is worked out by the SessionStart hook: this module cannot import node:path.
 const nonInvasiveAdvice = [
-  'on. Leave no trace of ts-pro in the project.',
-  '  Write no `ts-pro-exception` comments; list each exception in your report and in the decisions file below instead.',
-  '  Where the rules or skills name `docs/decisions.md` or `docs/structure.md`, use the files of the same name in `~/.claude/ts-pro/projects/<project directory name>/`.',
+  'on. Leave no trace of ts-pro in the project; a hook blocks writes that mention it.',
+  '  Write no `ts-pro-exception` comments; list each exception in your report and in `decisions.md` in the ts-pro notes folder named at session start.',
+  '  Where the rules or skills name `docs/decisions.md` or `docs/structure.md`, use the files of the same name in that notes folder.',
   '  Create no issue files inside the project; an issues folder must be outside it, or the issue source `github` or `session`.',
   '  Do not mention ts-pro in code, commits, docs or comments.',
+  '  When you start the ts-pro:reviewer agent, give it the notes folder along with the range.',
 ].join('\n')
 
 const describeControls = ({ controls }: { controls: Controls }) =>
@@ -77,6 +79,13 @@ export const register: Register = (on, options) => {
       const result = await $.config.set({ key: `ts-pro.${field}`, value })
       if (result.deny !== undefined) return $.ui.toast(`ts-pro: ${result.deny}`)
       await update($, controls, (latest) => ({ ...latest, [field]: value }))
+    }
+
+    const toggleNonInvasive = async () => {
+      await setControl({ field: 'non_invasive', value: !current.non_invasive })
+      if (!current.non_invasive && (options.issue_source ?? 'folder') === 'folder') {
+        $.ui.toast('ts-pro: issue files are blocked inside the project. Set the issues folder outside it, or use github or session, in /config.')
+      }
     }
 
     return (
@@ -120,7 +129,7 @@ export const register: Register = (on, options) => {
             key="non-invasive"
             label={current.non_invasive ? 'non-invasive' : 'invasive ok'}
             {...(current.non_invasive ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
-            onPress={() => setControl({ field: 'non_invasive', value: !current.non_invasive })}
+            onPress={() => toggleNonInvasive()}
           />
           <Box flexGrow={1} />
           <Button key="find-issues" plain label="Find issues" onPress={() => runCommand({ command: 'ts-pro:find-issues' })} />

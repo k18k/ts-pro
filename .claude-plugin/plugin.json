@@ -38,7 +38,7 @@
     "non_invasive": {
       "type": "boolean",
       "title": "Non-invasive mode",
-      "description": "Leave no trace of ts-pro in the project: no exception comments, no docs files, no issue files. Decisions and notes are kept in ~/.claude/ts-pro/ instead.",
+      "description": "Leave no trace of ts-pro in the project: no exception comments, no docs files, no issue files. Decisions and notes are kept in ~/.claude/ts-pro/projects/ instead. Install the plugin at user scope, because project and local installs are recorded in the project's .claude folder.",
       "default": false
     },
     "subagents": {
