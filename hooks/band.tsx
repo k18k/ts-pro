@@ -4,14 +4,32 @@ import type { PluginOptions, Register } from 'claude-code'
 import { gitLevels, isGitLevel } from '../scripts/git-gate.ts'
 import type { Controls } from '../types'
 
+export const subagentModes = ['off', 'ts-pro', 'all'] as const
+
+const nextSubagentMode = ({ mode }: { mode: Controls['subagents'] }) =>
+  subagentModes[(subagentModes.indexOf(mode) + 1) % subagentModes.length]
+
 // The band above the prompt. The settings themselves live in the plugin's userConfig, which
 // the command hooks and skills read; a press writes there, and this copy only redraws the band.
 const readControls = ({ options }: { options: PluginOptions }) => ({
   git_level: isGitLevel(options.git_level) ? options.git_level : gitLevels[0],
   pause_staging: options.pause_staging === true,
   write_tests: options.write_tests !== false,
+  subagents: subagentModes.find((mode) => mode === options.subagents) ?? subagentModes[0],
   band: options.band !== false,
 })
+
+const subagentAdvice = {
+  off: 'no preference.',
+  'ts-pro': "the developer would rather you did not start ts-pro's own agents, such as ts-pro:reviewer; do that work inline.",
+  all: 'the developer would rather you did not start any subagent; do the work inline unless they ask for one.',
+} satisfies Record<Controls['subagents'], string>
+
+const subagentLabels = {
+  off: 'subagents ok',
+  'ts-pro': 'no ts-pro agents',
+  all: 'no subagents',
+} satisfies Record<Controls['subagents'], string>
 
 const describeControls = ({ controls }: { controls: Controls }) =>
   [
@@ -19,6 +37,7 @@ const describeControls = ({ controls }: { controls: Controls }) =>
     `- Git level: ${controls.git_level}. Go exactly that far and no further.`,
     `- Staging: ${controls.pause_staging ? 'paused. Stage, commit and push nothing; leave the work in the working tree.' : 'not paused.'}`,
     `- Writing tests: ${controls.write_tests ? 'on.' : 'off. Write no new tests; still run the existing ones.'}`,
+    `- Subagents: ${subagentAdvice[controls.subagents]}`,
   ].join('\n')
 
 export const register: Register = (on, options) => {
@@ -80,6 +99,12 @@ export const register: Register = (on, options) => {
             label={current.write_tests ? 'tests on' : 'tests off'}
             {...(current.write_tests ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
             onPress={() => setControl({ field: 'write_tests', value: !current.write_tests })}
+          />
+          <Button
+            key="subagents"
+            label={subagentLabels[current.subagents]}
+            {...(current.subagents === 'off' ? { plain: true as const, dimColor: true } : { variant: 'primary' as const })}
+            onPress={() => setControl({ field: 'subagents', value: nextSubagentMode({ mode: current.subagents }) })}
           />
           <Box flexGrow={1} />
           <Button key="find-issues" plain label="Find issues" onPress={() => runCommand({ command: 'ts-pro:find-issues' })} />

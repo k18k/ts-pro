@@ -3,6 +3,7 @@ export type Controls = {
   git_level: 'changes' | 'staging' | 'commit' | 'push'
   pause_staging: boolean
   write_tests: boolean
+  subagents: (typeof import('../hooks/band.tsx').subagentModes)[number]
   band: boolean
 }
 

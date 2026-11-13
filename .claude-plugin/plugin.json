@@ -35,6 +35,13 @@
       "description": "Whether Claude writes tests for what it adds or changes. When off, existing tests still run.",
       "default": true
     },
+    "subagents": {
+      "type": "string",
+      "title": "Disadvise subagents",
+      "description": "Tell Claude you would rather it did not use subagents: off, only the ones ts-pro's skills start (ts-pro), or all of them. Advice, not a block.",
+      "options": ["off", "ts-pro", "all"],
+      "default": "off"
+    },
     "issue_source": {
       "type": "string",
       "title": "Issue source",
