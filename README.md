@@ -15,15 +15,16 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 **Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 1,050 words) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 71 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
 
-**Controls** sit in a band above the prompt: the git level, pause staging, writing tests and disadvising subagents as buttons, plus Find issues, Review and Auto. A press takes effect at once and Claude is told the new value. The band needs a Claude Code build with plugin UI modules; the "Band above the prompt" setting in `/config` turns it off and on. The same settings are in `/config`:
+**Controls** sit in a band above the prompt: the git level, pause staging, writing tests, non-invasive mode and disadvising subagents as buttons, plus Find issues, Review and Auto. A press takes effect at once and Claude is told the new value. The band needs a Claude Code build with plugin UI modules; the "Band above the prompt" setting in `/config` turns it off and on. The same settings are in `/config`:
 
 | Setting | Values | Effect |
 | --- | --- | --- |
 | Git level | `changes`, `staging`, `commit`, `push` | A hook blocks git commands above the level |
 | Pause staging | on, off | Blocks staging, commits and pushes while you compare changes |
 | Writing tests | on, off | Whether Claude writes tests for what it changes; existing tests always run |
+| Non-invasive mode | on, off | Leaves no trace of ts-pro in the project; decisions go to `~/.claude/ts-pro/projects/` |
 | Disadvise subagents | `off`, `ts-pro`, `all` | Tells Claude to avoid ts-pro's own agents or all subagents; advice, not a block |
-| Issue source, Issues folder | `folder` or `github` | Where issues are read and filed |
+| Issue source, Issues folder | `folder`, `github` or `session`; the folder may be outside the project | Where issues are read and filed |
 | Autonomous task limit | 1 to 100 | Where autonomous mode stops |
 
 **Work modes** are commands:

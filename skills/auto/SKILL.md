@@ -11,6 +11,7 @@ Work through the project's open issues without waiting for input between them.
 **Where the issues are.** Issue source is **${user_config.issue_source}**.
 
 - `folder`: one Markdown file per issue in `${user_config.issues_folder}`. An issue is closed by deleting its file in the same change that resolves it.
+- `session`: issues are kept in this conversation as a numbered list. An issue is closed by marking it done in that list.
 - `github`: `gh issue list` for the current repository. Close an issue only at git level `push`; below that, name the issue in your report.
 
 **Loop.** Pick the highest-impact open issue you can finish without a developer decision. Treat it as a goal if it needs several tasks, otherwise as one task, and follow `${CLAUDE_PLUGIN_ROOT}/skills/task/SKILL.md` for each task. Then pick the next.

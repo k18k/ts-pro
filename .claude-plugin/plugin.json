@@ -35,6 +35,12 @@
       "description": "Whether Claude writes tests for what it adds or changes. When off, existing tests still run.",
       "default": true
     },
+    "non_invasive": {
+      "type": "boolean",
+      "title": "Non-invasive mode",
+      "description": "Leave no trace of ts-pro in the project: no exception comments, no docs files, no issue files. Decisions and notes are kept in ~/.claude/ts-pro/ instead.",
+      "default": false
+    },
     "subagents": {
       "type": "string",
       "title": "Disadvise subagents",
@@ -45,14 +51,14 @@
     "issue_source": {
       "type": "string",
       "title": "Issue source",
-      "description": "Where find-issues and autonomous mode read and file issues.",
-      "options": ["folder", "github"],
+      "description": "Where find-issues and autonomous mode read and file issues. session keeps them in the conversation only.",
+      "options": ["folder", "github", "session"],
       "default": "folder"
     },
     "issues_folder": {
       "type": "string",
       "title": "Issues folder",
-      "description": "Folder of issue files, relative to the project root. Used when the issue source is folder.",
+      "description": "Folder of issue files, relative to the project root or absolute, so it can sit outside the project. Used when the issue source is folder.",
       "default": "docs/issues"
     },
     "max_auto_tasks": {

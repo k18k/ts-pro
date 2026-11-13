@@ -15,6 +15,7 @@ const readControls = ({ options }: { options: PluginOptions }) => ({
   git_level: isGitLevel(options.git_level) ? options.git_level : gitLevels[0],
   pause_staging: options.pause_staging === true,
   write_tests: options.write_tests !== false,
+  non_invasive: options.non_invasive === true,
   subagents: subagentModes.find((mode) => mode === options.subagents) ?? subagentModes[0],
   band: options.band !== false,
 })
@@ -31,6 +32,14 @@ const subagentLabels = {
   all: 'no subagents',
 } satisfies Record<Controls['subagents'], string>
 
+const nonInvasiveAdvice = [
+  'on. Leave no trace of ts-pro in the project.',
+  '  Write no `ts-pro-exception` comments; list each exception in your report and in the decisions file below instead.',
+  '  Where the rules or skills name `docs/decisions.md` or `docs/structure.md`, use the files of the same name in `~/.claude/ts-pro/projects/<project directory name>/`.',
+  '  Create no issue files inside the project; an issues folder must be outside it, or the issue source `github` or `session`.',
+  '  Do not mention ts-pro in code, commits, docs or comments.',
+].join('\n')
+
 const describeControls = ({ controls }: { controls: Controls }) =>
   [
     'ts-pro controls, as the developer has them set now. They replace any value stated earlier in this conversation.',
@@ -38,6 +47,7 @@ const describeControls = ({ controls }: { controls: Controls }) =>
     `- Staging: ${controls.pause_staging ? 'paused. Stage, commit and push nothing; leave the work in the working tree.' : 'not paused.'}`,
     `- Writing tests: ${controls.write_tests ? 'on.' : 'off. Write no new tests; still run the existing ones.'}`,
     `- Subagents: ${subagentAdvice[controls.subagents]}`,
+    `- Non-invasive mode: ${controls.non_invasive ? nonInvasiveAdvice : 'off.'}`,
   ].join('\n')
 
 export const register: Register = (on, options) => {
@@ -105,6 +115,12 @@ export const register: Register = (on, options) => {
             label={subagentLabels[current.subagents]}
             {...(current.subagents === 'off' ? { plain: true as const, dimColor: true } : { variant: 'primary' as const })}
             onPress={() => setControl({ field: 'subagents', value: nextSubagentMode({ mode: current.subagents }) })}
+          />
+          <Button
+            key="non-invasive"
+            label={current.non_invasive ? 'non-invasive' : 'invasive ok'}
+            {...(current.non_invasive ? { variant: 'primary' as const } : { plain: true as const, dimColor: true })}
+            onPress={() => setControl({ field: 'non_invasive', value: !current.non_invasive })}
           />
           <Box flexGrow={1} />
           <Button key="find-issues" plain label="Find issues" onPress={() => runCommand({ command: 'ts-pro:find-issues' })} />
