@@ -45,6 +45,7 @@ Modular, so that skipping is safe:
 Blast radius:
 
 - Change only what the task needs. Anything else worth changing is named in the report, not changed.
+- You own the code your change touches. If what you add would repeat existing code, extend or merge that code instead of writing beside it. A bug or security hole on the path of the change is fixed in the same task; anything outside that path is reported, not changed.
 - Finish the change: every caller, test, fixture and doc it breaks is updated in the same task.
 - A bug is fixed once, at its root cause. Check each caller that relied on the old behaviour before changing shared code.
 - Code you move or merge keeps its error handling and validation.
