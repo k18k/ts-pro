@@ -1,6 +1,7 @@
 {
   "name": "k18k",
   "owner": { "name": "Krystian Mikołajczyk" },
+  "description": "Claude Code plugins by k18k: ts-pro, for TypeScript with low technical debt.",
   "plugins": [
     {
       "name": "ts-pro",

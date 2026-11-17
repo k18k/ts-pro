@@ -4,9 +4,9 @@ import type { PluginOptions, Register } from 'claude-code'
 import { gitLevels, isGitLevel } from '../scripts/git-gate.ts'
 import type { Controls } from '../types'
 
-export const subagentModes = ['off', 'ts-pro', 'all'] as const
+const subagentModes = ['off', 'ts-pro', 'all'] as const satisfies readonly Controls['subagents'][]
 
-export const issueSources = ['folder', 'github', 'session'] as const
+const issueSources = ['folder', 'github', 'session'] as const satisfies readonly Controls['issue_source'][]
 
 const findNext = <Value,>({ values, current }: { values: readonly Value[]; current: Value }) =>
   values[(values.indexOf(current) + 1) % values.length] ?? current
