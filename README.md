@@ -26,7 +26,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 | Writing tests | on, off | Whether Claude writes tests for what it changes; existing tests always run |
 | Non-invasive mode | on, off | Leaves no trace of ts-pro in the project: a hook blocks writes that mention ts-pro or put issue files in the project, and decisions go to `~/.claude/ts-pro/projects/`. Needs a user-scope install, because project and local installs are recorded in the project's `.claude` folder |
 | Disadvise subagents | `off`, `ts-pro`, `all` | Tells Claude to avoid ts-pro's own agents or all subagents; advice, not a block |
-| Issue source, Issues folder | `folder`, `github` or `session`; the folder may be outside the project | Where issues are read and filed |
+| Issue source, Issues folder | `folder`, `github` or `session`; the folder may be outside the project | Where issues are read and filed. An issue marked `not-now` (a GitHub label, `labels: [not-now]` in a folder issue's frontmatter, or `(not-now)` in a session list) is for later: auto mode skips it |
 | Autonomous task limit | 1 to 100 | Where autonomous mode stops |
 
 **Work modes** are commands:

@@ -21,4 +21,6 @@ Find problems and file them. Change no source code.
    - **Suggested fix:** the smallest change that resolves it.
 5. Report the count by kind and the three you would fix first.
 
+**Issues for later.** An issue is for now unless it is marked `not-now`: on GitHub the `not-now` label (create it with `gh label create not-now --description "For later" --force` before first use), in a folder issue file `labels: [not-now]` in its frontmatter, in a session list `(not-now)` after the title. File every issue for now unless the developer says it is for later; marking and unmarking is their call.
+
 Existing violations are in scope here because the developer asked for them. Group repeated instances of one violation into a single issue.
