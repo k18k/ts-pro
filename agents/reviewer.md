@@ -20,7 +20,7 @@ Violations that were already there are not findings. A changed line that copies 
 
 - A fact with a second home: a hand-written type beside a schema, a second alias for a schema's exported type, retyped fields, untyped SQL, a union beside its values, a list a tool already produces.
 - Would adding a field tomorrow force an edit here? If so, say where the cascade breaks.
-- Conventions: names, `is`/`assert` prefixes, return types, annotations, a parameter the call does not explain, untargeted updates, `let`, file kind, folders by feature.
+- Conventions: names, `is`/`assert` prefixes, return types, annotations, a parameter the call does not explain, untargeted updates, an error without a code from the closed set, `let`, file kind, folders by feature.
 - Anything on the banned or last-resort lists. A last-resort pattern without `// ts-pro-exception: <reason>` is a finding; with it, list it under Exceptions.
 - A parsed value trusted by convention: a function that is not exported, takes `z.input<typeof s>` or a bare primitive, and is only called with values from `s.parse` or `s.safeParse`. Fix: brand `s` and take `z.output<typeof s>`. Not a finding when the value is parsed and used in the same function, or when the schema's output is an object shape.
 - A weakened control: does the diff remove or loosen a check, guard, policy or validation (auth middleware, TLS verification, CORS, RLS, a schema)? A finding unless the developer asked for it.

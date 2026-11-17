@@ -90,6 +90,7 @@ Verify and report:
 - Shared database selects instead of repeated column lists.
 - Database access is typed end to end: an ORM, recorded in `docs/decisions.md` (ask if none is chosen), or, without one, queries in `.sql` files with typed results. No untyped SQL strings in code.
 - Applications log through a logger behind an adapter, not `console.*`.
+- Errors carry a clear code from one closed set (`'order.not_found'`, in a `z.enum` or `as const` array), never plain-language text. Text for people is looked up from the code, so it can be translated.
 - Anything that is not the product sits behind a replaceable adapter: a factory passed once at startup, with an in-memory implementation that is the default when none is passed, and one conformance test suite run against every implementation. How wide the support goes is the developer's call, recorded in `docs/decisions.md`; ask if it is missing.
 - Functions never receive services as parameters. Adapters are reached through `AsyncLocalStorage`; reading one outside a context throws. Read [references/adapters.md](references/adapters.md) before writing or changing an adapter.
 - Services are isolated: no importing another service's internals.
