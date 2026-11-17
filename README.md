@@ -42,11 +42,13 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 - `SessionStart`: loads the rules.
 - `PreToolUse` on Bash: the git gate.
+- `PreToolUse` on Bash, Edit and Write: the control gate. Blocks a change that weakens a security control to make an error go away (TLS checks off, CORS open with credentials, RLS off, `.passthrough()`, `chmod 777`, `curl -k`, `--no-verify`, an auth check removed). A line marked `ts-pro-exception: <reason>` passes; Markdown files are not checked.
 - `PostToolUse` on Edit and Write: runs the project's linter (Oxc preferred, ESLint if that is what the project has) on the edited file. Does nothing when the project has no linter.
 
 ## Limits
 
 - The git gate reads the command text. It is a guard rail, not a sandbox: `bash -c "git push"`, a git alias or `gh pr create` are not recognised.
+- The control gate matches patterns, so a control written in an unfamiliar way slips through; the reviewer checks for loosened controls too. Removed auth is caught only when an Edit replaces text that had an auth check with text that has none.
 - The lint hook reports findings for the whole edited file and tells Claude to fix only the lines it touched.
 
 ## Development
