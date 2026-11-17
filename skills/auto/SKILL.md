@@ -14,7 +14,7 @@ Work through the project's open issues without waiting for input between them.
 - `session`: issues are kept in this conversation as a numbered list. An issue is closed by marking it done in that list.
 - `github`: `gh issue list` for the current repository. Close an issue only at git level `push`; below that, name the issue in your report.
 
-**Loop.** Pick the highest-impact open issue you can finish without a developer decision. Treat it as a goal if it needs several tasks, otherwise as one task, and follow `${CLAUDE_PLUGIN_ROOT}/skills/task/SKILL.md` for each task. Then pick the next.
+**Loop.** Pick the highest-impact open issue you can finish without a developer decision. Treat it as a goal if it needs several tasks, otherwise as one task, and follow `${CLAUDE_PLUGIN_ROOT}/skills/task/SKILL.md` for each task. Before picking the next, write one or two lines on what changed in your picture of the project: a new decision goes in `docs/decisions.md` (the notes folder in non-invasive mode), a corrected assumption in the final report. Long runs are where the picture drifts.
 
 **Stop when any of these is true:**
 

@@ -26,6 +26,7 @@ Solve the whole task with the least new code. The order is fixed: a candidate mu
 Before writing:
 
 - Read the task and the code it touches, and no more than that. List every place the change must reach: callers, tests, fixtures, config, exports, docs. Trace usages with the type checker or language server; text search alone misses some.
+- Orient: what the code is for and who uses it; who owns the data it touches and who may access it (`docs/decisions.md`); what already exists that does the same or something similar; which security controls the change passes through. Unknown and needed: ask.
 - Name what the change could break: data it would destroy or expose, callers that stop working. If it would destroy or expose data, or the request leaves open a choice that users would notice, ask. Otherwise build the smallest version that does the core job and say what you left out.
 
 Take the first option that fully works:
@@ -54,6 +55,7 @@ Blast radius:
 Verify and report:
 
 - Verify in proportion to the risk, and run it: one check for a small branch, the full set of cases for money, permissions and migrations.
+- Compare the result with what you expected. A match goes on; a mismatch sends you back to reading the code, not to the next fix.
 - End the report with one or two lines: what you skipped or did not check, any shortcut with its limit, and any risk the developer must know.
 
 ## Conventions (arbitrary, so exact)
