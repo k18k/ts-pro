@@ -1,7 +1,7 @@
 {
   "name": "ts-pro",
   "displayName": "TS Pro",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "TypeScript coding, code review and vibe coding with low technical debt: one source of truth, native Node.js first, visible exceptions.",
   "author": { "name": "Krystian Mikołajczyk" },
   "repository": "https://github.com/k18k/ts-pro",
