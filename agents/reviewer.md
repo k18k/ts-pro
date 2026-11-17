@@ -22,6 +22,7 @@ Violations that were already there are not findings. A changed line that copies 
 - Would adding a field tomorrow force an edit here? If so, say where the cascade breaks.
 - Conventions: names, `is`/`assert` prefixes, return types, annotations, single object parameter, `let`, file kind.
 - Anything on the banned or last-resort lists. A last-resort pattern without `// ts-pro-exception: <reason>` is a finding; with it, list it under Exceptions.
+- A parsed value trusted by convention: a function that is not exported, takes `z.input<typeof s>` or a bare primitive, and is only called with values from `s.parse` or `s.safeParse`. Fix: brand `s` and take `z.output<typeof s>`. Not a finding when the value is parsed and used in the same function, or when the schema's output is an object shape.
 - New dependencies: does the runtime or the project already cover it, and is it in `docs/decisions.md`?
 - Tests: do they pin intended behaviour? Was an assertion weakened, a test skipped or a snapshot regenerated to get to green?
 - Readability: can each new function and type be understood at first glance?

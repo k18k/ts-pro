@@ -1,10 +1,10 @@
 # Hacky code: the verdicts
 
-The developer's verdict on 71 patterns, by name. Code is shown only where the name alone is unclear. Judge unlisted patterns by the nearest ones.
+The developer's verdict on 72 patterns, by name. Code is shown only where the name alone is unclear. Judge unlisted patterns by the nearest ones.
 
 ## Banned: never write it
 
-- **Types:** double cast (`as unknown as X`); `@ts-ignore` and `@ts-expect-error`; casting `JSON.parse` output; `Object.keys(obj) as (keyof typeof obj)[]`; `Record<string, any>` bags; `{} as User` filled in later.
+- **Types:** double cast (`as unknown as X`); `@ts-ignore` and `@ts-expect-error`; casting `JSON.parse` output; `Object.keys(obj) as (keyof typeof obj)[]`; `Record<string, any>` bags; `{} as User` filled in later; trusted by convention, a parsed value passed on as an unbranded primitive or `z.input` (brand the schema and pass `z.output`).
 - **Control flow:** `setTimeout(fn, 0)` or any tick skipping; retry in a loop until it works; boolean flag parameters; async callbacks in `forEach` (unawaited promises); `.catch(() => null)`.
 - **Values:** `JSON.parse(JSON.stringify(obj))`; meaning packed into a string and read by position (`id.split('_')[1]`); regex that parses HTML, JSON or a URL; loose equality, including `== null`; `delete obj.field` (use `const { password, ...rest } = user`); `rows[0].id` without checking; relying on object key order; hand date arithmetic (use `Temporal`).
 - **State and structure:** globals on `globalThis`; patching built-ins or library objects; mutating an argument in a function that looks read-only; a copied block with one line changed; commented-out code; leftover `console.log`; `process.env` read in many files; `let` assigned in branches where one expression would do.

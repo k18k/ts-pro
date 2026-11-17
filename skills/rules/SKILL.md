@@ -76,7 +76,7 @@ Verify and report:
 - No loose types at the top of files.
 - Prefer branded types (`string & { readonly brand: 'UserId' }`, or zod `.brand()`) for values of the same primitive that must not be mixed up, such as ids, units and validated strings.
 - No type gymnastics. No feature is banned; a reader must be able to say what the type resolves to at first glance.
-- Parse untrusted data once, where it enters; past that, functions trust their typed input.
+- Parse untrusted data once, where it enters; past that, functions trust their typed input, and that type must be one only the parser can produce. When a parsed primitive goes on to other functions, brand the schema (`z.uuidv4().brand('OrderId')`); they take `z.output<typeof schema>`, never `z.input` or the bare primitive. Entry points keep `z.input`, so outside callers do not change.
 
 ## Structure
 
@@ -109,7 +109,7 @@ Verify and report:
 
 ## Hacky code
 
-The developer gave a verdict on 71 named patterns: [references/hacky-code.md](references/hacky-code.md). Read it before writing anything that feels like a shortcut, and when reviewing. The frequent ones:
+The developer gave a verdict on 72 named patterns: [references/hacky-code.md](references/hacky-code.md). Read it before writing anything that feels like a shortcut, and when reviewing. The frequent ones:
 
 - **Banned:** double cast, `@ts-ignore`, casting `JSON.parse`, `setTimeout(fn, 0)`, retry-until-it-works, unawaited promises, `.catch(() => null)`, `==`, `delete obj.field`, hand date arithmetic, commented-out code, leftover `console.log`, barrel files, string-built URLs.
 - **Last resort (with exception comment):** empty catch, magic number, sentinel return, module-level mutable state, library internals, `patch-package`, `overrides`, `--force`.
