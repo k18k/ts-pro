@@ -6,7 +6,8 @@
     {
       "name": "ts-pro",
       "source": "./",
-      "description": "TypeScript coding, code review and vibe coding with low technical debt."
+      "description": "TypeScript coding, code review and vibe coding with low technical debt.",
+      "category": "development"
     }
   ]
 }

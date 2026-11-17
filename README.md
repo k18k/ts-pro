@@ -1,3 +1,5 @@
+<img src=".claude-plugin/icon.png" alt="" width="96" height="96">
+
 # ts-pro
 
 A Claude Code plugin for TypeScript coding, code review and vibe coding with low technical debt. It runs as close to native Node.js with TypeScript as possible.
@@ -56,9 +58,9 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 The rules have one home, `skills/rules/SKILL.md`; the session hook renders that file. The scripts follow the rules they enforce.
 
 ```bash
-npm install   # @types/node and typescript, for the type check only
-npm test             # node:test with coverage: the scripts (test/*.spec.ts)
-npm run check
+pnpm install         # @types/node and typescript, for the type check only
+pnpm test            # node:test with coverage: the scripts (test/*.spec.ts)
+pnpm check
 claude plugin test .  # the band (test/*.test.tsx), run by Claude Code's own test runner
 claude plugin validate .
 ```
