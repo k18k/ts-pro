@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Set up ts-pro in this project
 
-1. **Conventions.** Work out how files are named by kind from the existing code and write them to `docs/structure.md` as a short list (`[name].service.ts`: business logic, and so on). Conventions only: never list the files themselves, because the file tree already does. In an empty project, propose a set and ask.
+1. **Conventions.** Work out how files are named by kind and how folders group them by feature from the existing code, and write both to `docs/structure.md` as a short list (`[name].service.ts`: business logic; `src/<feature>/`: one feature's files; and so on). Conventions only: never list the files themselves, because the file tree already does. In an empty project, propose a set and ask.
 2. **Decisions.** Create `docs/decisions.md` if it is missing. Ask the developer the questions the rules leave to them and record each answer in one line with its reason:
    - What is the product itself, and what around it should be replaceable?
    - For each replaceable part (storage, mail, queue), how wide should support go?

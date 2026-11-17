@@ -13,15 +13,17 @@ The developer's own reference implementation is the katrix server: https://githu
 The in-memory adapter defines the contract, so the contract has one definition. Other adapters end with `satisfies ReturnType<typeof createMemoryUsersStorage>`.
 
 ```ts
-// user.z.ts
+// users/user.z.ts
 export const userSchema = z.object({ id: z.string(), email: z.string() })
+export type User = z.infer<typeof userSchema>
 export const newUserSchema = userSchema.omit({ id: true })
+export type NewUser = z.infer<typeof newUserSchema>
 
-// users-storage.memory.ts
+// users/users-storage.memory.ts
 export const createMemoryUsersStorage = () => {
-  const users = new Map<string, z.infer<typeof userSchema>>()
+  const users = new Map<string, User>()
   return {
-    insert: async ({ newUser }: { newUser: z.infer<typeof newUserSchema> }) => {
+    insert: async (newUser: NewUser) => {
       const user = { ...newUser, id: randomUUID() }
       users.set(user.id, user)
       return user
@@ -29,7 +31,7 @@ export const createMemoryUsersStorage = () => {
   }
 }
 
-// users-storage.context.ts
+// users/users-storage.context.ts
 const usersStorageContext = new AsyncLocalStorage<ReturnType<typeof createMemoryUsersStorage>>()
 
 function assertInsideUsersStorageContext(
@@ -46,10 +48,10 @@ export const usersStorage = () => {
   return storage
 }
 
-// user.service.ts — no storage parameter
-export const createUser = async (newUser: z.infer<typeof newUserSchema>) => usersStorage().insert({ newUser })
+// users/user.service.ts — no storage parameter
+export const createUser = async (newUser: NewUser) => usersStorage().insert(newUser)
 
-// user.controller.ts — untrusted input is parsed once, here
+// users/user.controller.ts — untrusted input is parsed once, here
 export const postUser = async ({ body }: { body: unknown }) => createUser(newUserSchema.parse(body))
 
 // main.ts — the adapter is chosen once, at startup

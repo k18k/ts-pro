@@ -33,7 +33,7 @@ Take the first option that fully works:
 
 1. Nothing. Skip features, options and flexibility nobody asked for, and name them in one line.
 2. What the codebase already has, used the way the surrounding code uses it.
-3. The runtime, an installed package or a justified new one, in the order under "Native first". A new package is right where hand-written code is the risk: cryptography, time zones, parsing, Unicode.
+3. The runtime, an installed package or a justified new one, in the order under "Native first". A new package is right where hand-written code is the risk: cryptography, time zones, parsing, Unicode, database access.
 4. The minimum new code.
 
 Modular, so that skipping is safe:
@@ -64,27 +64,32 @@ Verify and report:
 - No explicit return types; inference lets changes cascade. Only exceptions: `asserts x is T`, `x is T` predicates the compiler fails to infer, and a function that returns a branded type.
 - No annotation where the type is inferable.
 - A value built for a typed target is checked against it where it is declared: `const config = { enabled: true } satisfies AppOptions` (preferred) or `const config: AppOptions = ...`, or written inline at the call. A bare object literal passed on later is banned.
-- One parameter per function; more than one value means a single well-typed object. No flag or optional positional parameters.
+- One parameter per function, and the call shows what it takes: a bare value only when the name says what it is (`getUserById(id)`), otherwise a single well-typed object whose keys say it (`getUser({ id })`). More than one value is always an object. No flag or optional positional parameters. Callbacks whose signature a framework fixes, such as `(req, res)`, are exempt.
+- Updates are targeted: one function per change (`renameSupplier`, `setSupplierEmail`), not one update that checks which optional fields were passed.
 - `const` by default; `let` only where reassignment is unavoidable.
-- Files are named by kind (`x.service.ts`, `x.controller.ts`, `x.z.ts`); the project's kinds are in `docs/structure.md`.
+- Files are named by kind (`x.service.ts`, `x.controller.ts`, `x.z.ts`) and grouped in folders by feature (`src/orders/order.controller.ts`, `src/orders/order.z.ts`); code two features share goes in one shared folder. A flat `src/` of mixed files is banned. The project's kinds and folder layout are in `docs/structure.md`.
 - Comments only for code that looks removable but is not, and for exceptions.
 - One job per function, about 30 lines, nesting no deeper than 2.
 
 ## Types: one source of truth
 
 - No `any`: take `unknown` and narrow with an `is` or `assert` function.
-- With zod, the schema is the definition. No hand-written type for the same shape, and no alias `type User = z.infer<typeof userSchema>`; write `z.infer<typeof userSchema>` inline where a parameter needs it.
+- With zod, the schema is the definition, and its inferred type is exported once, right below it: `export const userSchema = z.object(...)`, then `export type User = z.infer<typeof userSchema>`. Code uses `User`. No hand-written type for the same shape, and no second alias elsewhere.
+- A hand-written type used in one place is written inline there; it gets a name on its second use.
 - Variants derive from the original (`.pick`, `.omit`, `.extend`); closed sets are one `z.enum` or `as const` array with the union derived. No TypeScript `enum`.
 - Types cross layers by inference (row types from the table definition, response types from the handler); no parallel DTO type unless the shape truly differs.
 - No loose types at the top of files.
 - Prefer branded types (`string & { readonly brand: 'UserId' }`, or zod `.brand()`) for values of the same primitive that must not be mixed up, such as ids, units and validated strings.
 - No type gymnastics. No feature is banned; a reader must be able to say what the type resolves to at first glance.
 - Parse untrusted data once, where it enters; past that, functions trust their typed input, and that type must be one only the parser can produce. When a parsed primitive goes on to other functions, brand the schema (`z.uuidv4().brand('OrderId')`); they take `z.output<typeof schema>`, never `z.input` or the bare primitive. Entry points keep `z.input`, so outside callers do not change.
+- Let the framework parse and type request params, query and body from the schema (a zod type provider, for example), not hand parsing in each handler.
 
 ## Structure
 
 - No duplication: search before writing; extract to a shared file on second use, not first.
 - Shared database selects instead of repeated column lists.
+- Database access is typed end to end: an ORM, recorded in `docs/decisions.md` (ask if none is chosen), or, without one, queries in `.sql` files with typed results. No untyped SQL strings in code.
+- Applications log through a logger behind an adapter, not `console.*`.
 - Anything that is not the product sits behind a replaceable adapter: a factory passed once at startup, with an in-memory implementation that is the default when none is passed, and one conformance test suite run against every implementation. How wide the support goes is the developer's call, recorded in `docs/decisions.md`; ask if it is missing.
 - Functions never receive services as parameters. Adapters are reached through `AsyncLocalStorage`; reading one outside a context throws. Read [references/adapters.md](references/adapters.md) before writing or changing an adapter.
 - Services are isolated: no importing another service's internals.
@@ -100,7 +105,7 @@ Verify and report:
 ## Debt
 
 - No `TODO` without a linked issue. No shims, deprecated wrappers or dead code; a change updates every caller.
-- Never keep by hand what a tool already reports: coverage knows what is untested, git what changed, the type checker what is broken, the file tree the structure. `docs/structure.md` holds naming conventions only.
+- Never keep by hand what a tool already reports: coverage knows what is untested, git what changed, the type checker what is broken, the file tree the structure. `docs/structure.md` holds naming and folder conventions only.
 
 ## Tests
 
@@ -114,5 +119,5 @@ Verify and report:
 
 The developer gave a verdict on 72 named patterns: [references/hacky-code.md](references/hacky-code.md). Read it before writing anything that feels like a shortcut, and when reviewing. The frequent ones:
 
-- **Banned:** double cast, `@ts-ignore`, casting `JSON.parse`, `setTimeout(fn, 0)`, retry-until-it-works, unawaited promises, `.catch(() => null)`, `==`, `delete obj.field`, hand date arithmetic, commented-out code, leftover `console.log`, barrel files, string-built URLs.
+- **Banned:** double cast, `@ts-ignore`, casting `JSON.parse`, `setTimeout(fn, 0)`, retry-until-it-works, unawaited promises, `.catch(() => null)`, `==`, `delete obj.field`, hand date arithmetic, commented-out code, `console.*` in application code, barrel files, string-built URLs.
 - **Last resort (with exception comment):** empty catch, magic number, sentinel return, module-level mutable state, library internals, `patch-package`, `overrides`, `--force`.
