@@ -16,6 +16,7 @@ Each principle comes with a few examples; recognise the other cases yourself.
 ## Scope
 
 - Follow the rules strictly in what you write. In a repo that already breaks them, do not fix existing violations unless asked, and do not add new ones even where the surrounding code does.
+- The rules shape the code you add. Existing code is reshaped only where the change cannot be made without it, never to bring it in line with the rules.
 - Stay inside the request. The rules shape how you write what was asked; they are not a reason to add architecture, files, config or scripts nobody asked for. A one-file script stays one file: adapters are for services an application depends on and may replace.
 - A rule may be broken only as a last resort, marked `// ts-pro-exception: <reason>` on the line. Unmarked exceptions are violations.
 
@@ -40,7 +41,7 @@ Modular, so that skipping is safe:
 
 - Skipping a feature does not mean closing the door on it. Features do get extended, and nobody knows which. Build no feature nobody asked for, but build what was asked so that extending it is cheap.
 - Each module does one job behind a narrow interface, and nothing reaches into another module's internals.
-- A special case lives in its own module, not as a new branch inside shared code, even when the branch is the shorter diff.
+- A special case lives in its own module, not as a new branch inside shared code, even when the branch is the shorter diff. The new code goes in its own function or file; the shared code is not rewritten around it.
 - Test: the likely next feature adds a function or a file and leaves today's code alone. If it would force a rewrite, the shape is wrong, however small the change.
 
 Blast radius:
@@ -111,6 +112,7 @@ Verify and report:
 ## Tests
 
 - A test pins what the code is meant to do, at every level from unit to integration.
+- A small change adds tests only where the project already has a test suite. Without one, it sets none up unless asked; say in the report that the change is untested.
 - When a test fails, find out why first; the default fix is in the source.
 - Change a test or snapshot only when the intended behaviour changed, and say so (old and new behaviour) before re-snapshotting.
 - Never get to green by weakening an assertion, skipping or deleting a test, or regenerating an unread snapshot.
