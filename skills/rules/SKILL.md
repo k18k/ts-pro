@@ -1,6 +1,6 @@
 ---
 name: rules
-description: The ts-pro rules for writing, changing and reviewing TypeScript. The plugin already puts these rules in context at session start and after compaction, so load this skill only when they are not in context, for example inside a subagent that writes or reviews TypeScript.
+description: The ts-pro rules for writing, changing and reviewing TypeScript. Load this skill before writing, changing or reviewing TypeScript in a ts-pro project, once per session, and again when its rules are no longer in context, for example after compaction or inside a subagent.
 ---
 
 # ts-pro rules

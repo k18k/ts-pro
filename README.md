@@ -15,7 +15,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 ## What it does
 
-**Rules in context, cheaply.** A `SessionStart` hook puts the rules (about 2,000 words, including a working style: correct first, then the smallest change, with a small blast radius) into context when a session starts and again after compaction, so they are not summarised away. Longer material loads only when needed: the verdicts on 72 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
+**Rules in context, cheaply.** The rules (about 2,000 words, including a working style: correct first, then the smallest change, with a small blast radius) are the `ts-pro:rules` skill. A short `SessionStart` notice, sent again after compaction, tells Claude to load that skill in full before it writes, changes or reviews TypeScript. The rules themselves are not hook output, because Claude Code cuts hook output past its size limit down to a short preview. Longer material loads only when needed: the verdicts on 72 "hacky" patterns, the adapter pattern and the native Node.js dos and don'ts are separate reference files.
 
 **Controls** sit in a band above the prompt: the git level, pause staging, writing tests as buttons, plus Find issues, Review and Auto. **More** opens a second row with non-invasive mode, disadvising subagents and the issue source. A press takes effect at once and Claude is told the new value. The band needs a Claude Code build with plugin UI modules; the "Band above the prompt" setting in `/config` turns it off and on. The same settings are in `/config`:
 
@@ -42,7 +42,7 @@ ts-pro needs no other plugin: the native Node.js baseline ships with it. The hoo
 
 **Hooks:**
 
-- `SessionStart`: loads the rules.
+- `SessionStart`: tells Claude to load the `ts-pro:rules` skill before TypeScript work.
 - `PreToolUse` on Bash: the git gate.
 - `PreToolUse` on Bash, Edit and Write: the control gate. Blocks a change that weakens a security control to make an error go away (TLS checks off, CORS open with credentials, RLS off, `.passthrough()`, `chmod 777`, `curl -k`, `--no-verify`, an auth check removed). A line marked `ts-pro-exception: <reason>` passes; Markdown files are not checked.
 - `PostToolUse` on Edit and Write: runs the project's linter (Oxc preferred, ESLint if that is what the project has) on the edited file. Does nothing when the project has no linter.

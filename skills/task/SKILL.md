@@ -8,7 +8,7 @@ argument-hint: "[what to do, or an issue reference]"
 
 Task: $ARGUMENTS
 
-Work through these steps in order. The ts-pro rules should already be in context; if they are not, load the `ts-pro:rules` skill first.
+Work through these steps in order. If the ts-pro rules are not in context, load the `ts-pro:rules` skill first.
 
 1. **Orient.** Read `docs/structure.md` and `docs/decisions.md` if they exist. If they do not, say once that `/ts-pro:setup` creates them, and continue.
 2. **Search before writing.** Look for existing functions, schemas, selects and adapters that already do part of the job.

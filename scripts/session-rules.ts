@@ -1,16 +1,9 @@
-import { readFile } from 'node:fs/promises'
-import { join } from 'node:path'
-
-const rulesDirectory = join(import.meta.dirname, '..', 'skills', 'rules')
-
-// The rules have one home, skills/rules/SKILL.md. This renders that file for the session
-// context: frontmatter dropped, the setting filled in, reference links made absolute.
-export const renderSessionRules = async ({ writeTests }: { writeTests: string }) => {
-  const skillFile = await readFile(join(rulesDirectory, 'SKILL.md'), 'utf8')
-  const [, ...bodyParts] = skillFile.split('\n---\n')
-  return bodyParts
-    .join('\n---\n')
-    .replaceAll('${user_config.write_tests}', writeTests)
-    .replaceAll('(references/', `(${rulesDirectory}/references/`)
-    .trim()
-}
+// The rules themselves live in skills/rules/SKILL.md and load as the ts-pro:rules skill.
+// Hook output past Claude Code's size limit reaches Claude only as a short preview, so the
+// session notice stays small and points at the skill instead of carrying the rules.
+export const renderSessionNotice = ({ notesDirectory }: { notesDirectory: string }) =>
+  [
+    'ts-pro is active in this project.',
+    'Before you write, change or review TypeScript, load the `ts-pro:rules` skill and follow it. Load it once per session; load it again only when its rules are no longer in context, for example after compaction. A task that touches no TypeScript does not need it.',
+    `ts-pro notes folder for this project, used only in non-invasive mode: ${notesDirectory}`,
+  ].join('\n\n')

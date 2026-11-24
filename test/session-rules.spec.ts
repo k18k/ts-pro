@@ -1,17 +1,17 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { renderSessionRules } from '../scripts/session-rules.ts'
+import { renderSessionNotice } from '../scripts/session-rules.ts'
 
-test('renders the rules without frontmatter and with the setting filled in', async () => {
-  const rules = await renderSessionRules({ writeTests: 'false' })
-  assert.ok(rules.startsWith('# ts-pro rules'))
-  assert.ok(!rules.includes('${user_config'))
-  assert.match(rules, /Writing tests is \*\*false\*\*/)
+test('points Claude at the ts-pro:rules skill instead of carrying the rules', () => {
+  const notice = renderSessionNotice({ notesDirectory: '/notes' })
+  assert.match(notice, /load the `ts-pro:rules` skill/)
+  assert.ok(!notice.includes('# ts-pro rules'))
 })
 
-test('points reference links at files that exist', async () => {
-  const rules = await renderSessionRules({ writeTests: 'true' })
-  assert.match(rules, /\(\/.*skills\/rules\/references\/hacky-code\.md\)/)
-  assert.match(rules, /\(\/.*skills\/rules\/references\/native-node\.md\)/)
-  assert.ok(!rules.includes('(references/'))
+test('names the notes folder', () => {
+  assert.match(renderSessionNotice({ notesDirectory: '/notes/project' }), /\/notes\/project$/)
+})
+
+test('stays far below the hook output limit', () => {
+  assert.ok(renderSessionNotice({ notesDirectory: '/notes' }).length < 2000)
 })
